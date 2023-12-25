@@ -5,15 +5,21 @@ import { RouterView, useRouter } from 'vue-router'
 import { useCardStore } from './stores/cards'
 import { onMounted } from 'vue'
 import { useDeckStore } from './stores/decks'
+import { useTableStore } from './stores/table'
 
 const cardsStore = useCardStore()
 const decksStore = useDeckStore()
+const tableStore = useTableStore()
 
 const router = useRouter()
 
 const drawerShown = ref(false)
 
 const links = [
+  {
+    title: 'Home',
+    value: 'home'
+  },
   {
     title: 'Cards Editor',
     value: 'cards'
@@ -37,6 +43,7 @@ const changePage = ({ id }: { id: string; value: boolean; path: unknown[] }) => 
 onMounted(() => {
   cardsStore.load()
   decksStore.load()
+  tableStore.load()
 })
 </script>
 

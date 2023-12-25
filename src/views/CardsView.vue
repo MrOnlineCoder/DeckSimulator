@@ -14,6 +14,9 @@
     >
       Add card
     </v-btn>
+    <v-btn prepend-icon="mdi-file-export" size="x-large" color="#673AB7" @click="exportCards">
+      Export
+    </v-btn>
   </div>
 
   <v-table v-if="cardsList.length">
@@ -80,6 +83,9 @@
 import { ref } from 'vue'
 import { useCardStore } from '@/stores/cards'
 import { computed } from 'vue'
+import { useDeckStore } from '@/stores/decks'
+
+import { downloadJsonAsFile } from '@/utils'
 
 const search = ref('')
 const cardTitle = ref('')
@@ -91,6 +97,7 @@ const errorSnackbarMessage = ref('')
 const cardDialogShown = ref(false)
 
 const cardsStore = useCardStore()
+const decksStore = useDeckStore()
 
 const cardsList = computed(() => {
   if (!search.value) {
@@ -120,6 +127,11 @@ const saveCard = async () => {
 
 const removeCard = async (id: string) => {
   await cardsStore.removeCard(id)
+  await decksStore.onCardRemoved(id)
+}
+
+const exportCards = () => {
+  downloadJsonAsFile(cardsStore.cards, 'cards.json')
 }
 </script>
 

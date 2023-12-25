@@ -36,6 +36,12 @@ export const useDeckStore = defineStore('decks', () => {
     persist()
   }
 
+  const onCardRemoved = (cardId: string) => {
+    for (const deck of decks.value) {
+      deck.cards = deck.cards.filter((deckCard) => deckCard.cardId !== cardId)
+    }
+  }
+
   const removeDeck = async (id: string) => {
     decks.value = decks.value.filter((deck) => deck.id !== id)
     persist()
@@ -46,6 +52,7 @@ export const useDeckStore = defineStore('decks', () => {
     addDeck,
     load,
     removeDeck,
-    updateDeck
+    updateDeck,
+    onCardRemoved
   }
 })

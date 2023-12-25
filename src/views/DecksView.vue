@@ -1,8 +1,15 @@
 <template>
-  <h1>Decks</h1>
-  <v-btn prepend-icon="mdi-card-plus" size="x-large" color="#009688" @click="showAddUI">
-    Add deck
-  </v-btn>
+  <div class="d-flex justify-space-between">
+    <h1>Decks</h1>
+    <div class="d-flex top-deck-actions">
+      <v-btn prepend-icon="mdi-card-plus" size="large" color="#009688" @click="showAddUI">
+        Add deck
+      </v-btn>
+      <v-btn prepend-icon="mdi-file-export" size="large" color="#673AB7" @click="exportDecks">
+        Export
+      </v-btn>
+    </div>
+  </div>
 
   <br />
   <v-table v-if="decksList.length">
@@ -123,6 +130,10 @@
   display: flex;
   column-gap: 8px;
 }
+
+.top-deck-actions {
+  column-gap: 8px;
+}
 </style>
 
 <script setup lang="ts">
@@ -131,6 +142,7 @@ import type { Deck, DeckCardItem } from '@/entities/deck'
 import { useDeckStore } from '@/stores/decks'
 import { useCardStore } from '@/stores/cards'
 import { computed } from 'vue'
+import { downloadJsonAsFile } from '@/utils'
 
 const decksStore = useDeckStore()
 const cardsStore = useCardStore()
@@ -247,5 +259,9 @@ const showEditUI = (deck: Deck) => {
   deckTitle.value = deck.title
   deckCards.value = deck.cards
   deckId.value = deck.id!
+}
+
+const exportDecks = () => {
+  downloadJsonAsFile(decksList.value, 'decks.json')
 }
 </script>
