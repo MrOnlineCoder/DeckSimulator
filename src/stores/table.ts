@@ -55,24 +55,30 @@ export const useTableStore = defineStore('table', () => {
     }
   })
 
-  const startNewSession = (deckIds: string[], mixAll: boolean, persistent: boolean) => {
+  const startNewSession = (params: {
+    deckIds: string[]
+    mixAll: boolean
+    persistent: boolean
+    topDiscardShown: boolean
+  }) => {
     const newSession: TableSession = {
       decks: [],
       log: [],
-      persistent,
-      startedAt: new Date()
+      persistent: params.persistent,
+      startedAt: new Date(),
+      topDiscardShown: params.topDiscardShown
     }
 
     const tableDecks: TableDeck[] = []
 
-    for (const deckId of deckIds) {
+    for (const deckId of params.deckIds) {
       const deck = decksStore.decks.find((d) => d.id === deckId)
       if (deck) {
         tableDecks.push(fillDeck.value(deck))
       }
     }
 
-    if (mixAll) {
+    if (params.mixAll) {
       newSession.decks = [
         {
           title: 'Mixed',
@@ -89,7 +95,7 @@ export const useTableStore = defineStore('table', () => {
 
     session.value = newSession
 
-    if (persistent) {
+    if (params.persistent) {
       persist()
     } else {
       clearPersistent()

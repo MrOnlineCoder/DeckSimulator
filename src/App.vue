@@ -34,9 +34,9 @@ const links = [
   }
 ]
 
-const changePage = ({ id }: { id: string; value: boolean; path: unknown[] }) => {
+const changePage = ({ id }: { id: unknown; value: boolean; path: unknown[] }) => {
   router.push({
-    name: id
+    name: id as string
   })
 }
 

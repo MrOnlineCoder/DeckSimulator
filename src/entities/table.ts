@@ -18,4 +18,5 @@ export interface TableSession {
   log: TableLog[]
   persistent: boolean
   startedAt: Date
+  topDiscardShown: boolean
 }

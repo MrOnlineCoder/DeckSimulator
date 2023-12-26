@@ -54,8 +54,8 @@
         <v-divider></v-divider>
         <GameCard
           :index="deck.discardedCards.length"
-          :card="deck.discardedCards[0]"
-          covered
+          :card="deck.discardedCards[deck.discardedCards.length - 1]"
+          :covered="!tableSession!.topDiscardShown"
           @click="discardPileShown = true"
           v-if="deck.discardedCards.length"
         />
@@ -85,6 +85,8 @@ import { ref } from 'vue'
 import { computed } from 'vue'
 
 const tableStore = useTableStore()
+
+const tableSession = computed(() => tableStore.session)
 
 const discardPileShown = ref(false)
 

@@ -33,6 +33,7 @@
       v-model="mixAllDecksIntoOneSetting"
       label="Mix all decks into one big deck"
     ></v-checkbox>
+    <v-checkbox v-model="showTopDiscardSetting" label="Show top card in discard pile"></v-checkbox>
     <v-btn
       prepend-icon="mdi-play-box-multiple"
       size="large"
@@ -66,6 +67,7 @@ const tableStore = useTableStore()
 const decksList = computed(() => decksStore.decks)
 const persistSetting = ref(true)
 const mixAllDecksIntoOneSetting = ref(false)
+const showTopDiscardSetting = ref(false)
 
 const selectedDecks = ref<string[]>([])
 
@@ -80,11 +82,12 @@ const startedAtFormatted = computed(() => {
 })
 
 const start = async () => {
-  await tableStore.startNewSession(
-    selectedDecks.value,
-    mixAllDecksIntoOneSetting.value,
-    persistSetting.value
-  )
+  await tableStore.startNewSession({
+    deckIds: selectedDecks.value,
+    mixAll: mixAllDecksIntoOneSetting.value,
+    persistent: persistSetting.value,
+    topDiscardShown: showTopDiscardSetting.value
+  })
 }
 
 const terminateSession = async () => {
