@@ -213,11 +213,12 @@ const getSelectedCardQuantity = computed(() => {
 })
 
 const setSelectedCardQuantity = (cardId: string, quantity: number) => {
+  const newQuantity = Math.max(1, quantity)
   deckCards.value = deckCards.value?.map((entry) => {
     if (entry.cardId === cardId) {
       return {
         ...entry,
-        quantity
+        quantity: newQuantity
       }
     }
 
